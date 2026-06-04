@@ -32,19 +32,16 @@ hf download bartowski/Qwen2.5-0.5B-Instruct-GGUF \
 
 ls -lh ~/models/  
 
-cd ~
-export TMPDIR=/home/pi/tmp
-mkdir -p /home/pi/tmp
-git clone --depth 1 https://github.com/ggerganov/llama.cpp
-cd llama.cpp
+LLAMAFILE_VERSION="0.10.3"
 
-cmake -B build \
-  -DGGML_NATIVE=OFF \
-  -DGGML_BLAS=ON \  
-  -DGGML_BLAS_VENDOR=OpenBLAS \
-  -DCMAKE_BUILD_TYPE=Release
+curl -L "https://github.com/mozilla-ai/llamafile/releases/download/$LLAMAFILE_VERSION/llamafile-$LLAMAFILE_VERSION" \
+  -o ~/llamafile
 
-cmake --build build --config Release -j2
+curl -L "https://github.com/mozilla-ai/llamafile/releases/download/$LLAMAFILE_VERSION/llamafile-$LLAMAFILE_VERSION-thin" \
+  -o ~/llamafile-thin
 
-sudo cp build/bin/llama-cli /usr/local/bin/
-sudo cp build/bin/llama-server /usr/local/bin/
+chmod +x ~/llamafile ~/llamafile-thin
+sudo cp ~/llamafile /usr/local/bin/llamafile
+sudo cp ~/llamafile-thin /usr/local/bin/llamafile-thin
+sudo setcap cap_ipc_lock+ep /usr/local/bin/llamafile 2>/dev/null || true
+
