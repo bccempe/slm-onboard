@@ -9,12 +9,8 @@ sudo dpkg --configure -a 2>/dev/null || true
 sudo apt update
 
 sudo apt install -y \
-  git \
-  cmake \
-  build-essential \
-  pkg-config \
-  libopenblas-dev \
-  python3-pip
+  python3-pip \
+  curl
 
 pip install --user --break-system-packages huggingface-hub
 
